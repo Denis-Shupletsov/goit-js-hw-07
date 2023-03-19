@@ -7,16 +7,28 @@ galleryRef.insertAdjacentHTML('beforeend', imagesMarkup);
 function createItemsMarkup(item) {
     return galleryItems.map(({ preview, original, description }) => {
         return `<li class="gallery__item">
-        <a class="gallery__link" href="large-image.jpg">
+        <a class="gallery__link" href="${original.value}">
             <img
                 class="gallery__image"
-                src="small-image.jpg"
-                data-source="large-image.jpg"
-                alt="Image description"
+                src="${preview}"
+                data-source="${original}"
+                alt="${description}"
             />
         </a>
 </li>`;
     }).join('');
+};
 
-}
-console.log(galleryItems);
+const onClickContainer = (event) => {
+    event.preventDefault();
+
+    const targetEl = event.target;
+    if (targetEl.classList.contains('gallery')) return;
+    const source = event.target.dataset.source;
+
+    const sample = basicLightbox.create(`<img src="${source}"width='800' height='600'>`);
+
+    sample.show();
+};
+
+galleryRef.addEventListener('click', onClickContainer);
